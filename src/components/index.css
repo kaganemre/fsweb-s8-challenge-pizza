@@ -1,0 +1,103 @@
+header {
+    height: 170px;
+}
+
+h1 {
+    font-family: "Londrina Solid", serif;
+}
+
+h4 {
+    font-weight: 600 !important;
+}
+h6 {
+    padding-right: 10px;
+    font-weight: bold !important;
+}
+
+select {
+    font-weight: 500;
+}
+
+.sp > span {
+    font-weight: bold;
+    font-size: 20px;
+}
+section {
+    font-family: "Barlow", serif;
+}
+
+nav {
+    width: 450px;
+}
+
+nav > :first-child {
+    font-family: "Barlow", serif;
+    font-weight:200;
+    text-decoration: none;
+}
+
+a {
+    text-decoration: none !important;
+}
+
+
+.bg-custom-red {
+    background-color: #CE2829;
+}
+
+
+section.container {
+    padding-right: 270px;
+    
+}
+
+.red-star {
+    color: #CE2829;
+    padding-left: 5px;
+}
+
+.red-special {
+    color: #CE2829;
+}
+
+textarea {
+    width: 33.125rem !important;
+    resize: none;
+}
+
+textarea::placeholder {
+    line-height: 45px;
+}
+.pd-4 {
+    padding: 2.5rem;
+}
+.pr-50 {
+    padding-right: 50px;
+}
+
+.pr-60 {
+    padding-right: 55px;
+}
+
+.f-weight {
+    font-weight: 600 !important;
+}
+
+hr {
+    width: 33.125rem;
+}
+
+.radius-right {
+    border-top-right-radius: 7px !important;
+    border-bottom-right-radius: 7px !important;
+}
+
+.radius-left {
+    border-top-left-radius: 7px !important;
+    border-bottom-left-radius: 7px !important;
+}
+@media (max-width: 768px) {
+    nav {
+        width:300px;
+    }
+}

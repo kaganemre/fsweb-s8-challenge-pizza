@@ -1,5 +1,7 @@
 import React, { useState, useEffect } from "react";
-import { Container, InputGroup, InputGroupText, Input } from "reactstrap";
+import { useHistory } from "react-router-dom";
+import { Input, FormFeedback } from "reactstrap";
+import axios from "axios";
 
 const malzemeListe = [
   { name: "Pepperoni", malzeme: "Pepperoni", isChecked: true },
@@ -19,16 +21,27 @@ const malzemeListe = [
 ];
 
 const formData = {
-  boyut: "",
-  kalinlik: "",
-  malzeme: malzemeListe,
+  boyut: "orta",
+  kalinlik: "orta",
+  malzeme: malzemeListe.filter((m) => m.isChecked),
   isim: "",
-  not: "",
+  not: " ",
   adet: 1,
+};
+const errorMessages = {
+  isim: "En az 3 karakter içermelidir.",
+  malzeme: "Malzeme en az 4 en fazla da 10 adet seçilebilir.",
 };
 
 export default function OrderForm() {
   const [form, setForm] = useState(formData);
+  const [malzemeler, setMalzemeler] = useState(malzemeListe);
+  const [isValid, setIsValid] = useState(false);
+  const [errors, setErrors] = useState({
+    isim: null,
+    malzeme: true,
+  });
+  const history = useHistory();
 
   const handleChange = (event) => {
     let { id, name, value, type, checked } = event.target;
@@ -42,24 +55,50 @@ export default function OrderForm() {
     }
 
     if (type === "checkbox") {
-      const malzemeler = [...form.malzeme];
-      const malzemeIndex = malzemeler.findIndex((m) => m.malzeme === value);
+      const mListe = [...malzemeler];
+      const mIndex = mListe.findIndex((m) => m.malzeme === value);
 
-      malzemeler[malzemeIndex] = {
-        ...malzemeler[malzemeIndex],
+      mListe[mIndex] = {
+        ...mListe[mIndex],
         isChecked: checked,
       };
-
-      value = malzemeler;
+      setMalzemeler([...mListe]);
+      value = mListe.filter((m) => m.isChecked === true);
     }
 
     setForm({ ...form, [name]: value });
     validateField(name, value);
   };
 
+  const validateField = (name, value) => {
+    let isValid;
+    if (name === "isim") {
+      isValid = value.trim().length >= 3;
+    } else if (name === "malzeme") {
+      isValid = value.length >= 4 && value.length <= 10;
+    } else {
+      isValid = true;
+    }
+
+    setErrors((prevErrors) => ({ ...prevErrors, [name]: isValid }));
+  };
+
   useEffect(() => {
-    console.log(form);
+    const validation = Object.values(errors).every((err) => err === true);
+    setIsValid(validation);
   }, [form]);
+
+  const handleSubmit = async (event) => {
+    event.preventDefault();
+    if (isValid) {
+      // console.log(form);
+      await axios
+        .post("https://reqres.in/api/pizza", form)
+        .then((response) => console.log(response.data));
+
+      // history.push("/success");
+    }
+  };
 
   return (
     <>
@@ -165,7 +204,7 @@ export default function OrderForm() {
                 }}
               >
                 <div>
-                  {form.malzeme.slice(0, 5).map((m, i) => {
+                  {malzemeler.slice(0, 5).map((m, i) => {
                     return (
                       <div key={i} className="mb-3">
                         <input
@@ -188,7 +227,7 @@ export default function OrderForm() {
                   })}
                 </div>
                 <div className="me-5">
-                  {form.malzeme.slice(5, 10).map((m, i) => {
+                  {malzemeler.slice(5, 10).map((m, i) => {
                     return (
                       <div key={i} className="mb-3">
                         <input
@@ -211,7 +250,7 @@ export default function OrderForm() {
                   })}
                 </div>
                 <div className="">
-                  {form.malzeme.slice(10, 14).map((m, i) => {
+                  {malzemeler.slice(10, 14).map((m, i) => {
                     return (
                       <div key={i} className="mb-3">
                         <input
@@ -235,22 +274,34 @@ export default function OrderForm() {
                 </div>
               </div>
 
+              {errors.malzeme === false && (
+                <div
+                  className="alert alert-danger"
+                  role="alert"
+                  style={{ width: "32rem", marginTop: "2rem" }}
+                >
+                  {errorMessages.malzeme}
+                </div>
+              )}
+
               <label className="mb-4 mt-5 f-weight" htmlFor="isim">
                 İsim
               </label>
-              <input
+              <Input
                 type="text"
                 name="isim"
                 id="isim"
                 value={form.isim}
                 onChange={handleChange}
-                className="form-control"
+                valid={errors.isim === true}
+                invalid={errors.isim === false}
               />
-
+              {!errors.isim && (
+                <FormFeedback>{errorMessages.isim}</FormFeedback>
+              )}
               <label className="mb-4 mt-4 f-weight">Sipariş Notu</label>
               <textarea
                 name="not"
-                id="not"
                 value={form.not}
                 onChange={handleChange}
                 className="form-control"
@@ -309,17 +360,29 @@ export default function OrderForm() {
 
                       <div className="d-flex mb-2">
                         <span className="me-5 pr-50">Seçimler</span>
-                        <span>25.00&#8378;</span>
+                        <span>
+                          {malzemeler.filter((m) => m.isChecked === true)
+                            .length * 5}
+                          &#8378;
+                        </span>
                       </div>
                       <div className="d-flex f-weight">
                         <span className="me-5 red-special pr-60">Toplam</span>
-                        <span className="red-special">110.50&#8378;</span>
+                        <span className="red-special">
+                          {malzemeler.filter((m) => m.isChecked === true)
+                            .length *
+                            5 +
+                            85.5 * form.adet}
+                          &#8378;
+                        </span>
                       </div>
                     </div>
                     <button
                       type="submit"
                       className="btn btn-warning rounded w-100 f-weight"
                       style={{ height: "50px" }}
+                      disabled={!isValid}
+                      onClick={handleSubmit}
                     >
                       SİPARİŞ VER
                     </button>

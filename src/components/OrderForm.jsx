@@ -1,45 +1,68 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Container, InputGroup, InputGroupText, Input } from "reactstrap";
 
+const malzemeListe = [
+  { name: "Pepperoni", malzeme: "Pepperoni", isChecked: true },
+  { name: "Tavuk Izgara", malzeme: "Tavuk Izgara", isChecked: false },
+  { name: "Mısır", malzeme: "Mısır", isChecked: true },
+  { name: "Sarımsak", malzeme: "Sarımsak", isChecked: false },
+  { name: "Ananas", malzeme: "Ananas", isChecked: true },
+  { name: "Sosis", malzeme: "Sosis", isChecked: true },
+  { name: "Soğan", malzeme: "Soğan", isChecked: false },
+  { name: "Brokoli", malzeme: "Brokoli", isChecked: false },
+  { name: "Biber", malzeme: "Biber", isChecked: false },
+  { name: "Kabak", malzeme: "Kabak", isChecked: false },
+  { name: "Kanada Jambonu", malzeme: "Kanada Jambonu", isChecked: false },
+  { name: "Domates", malzeme: "Domates", isChecked: false },
+  { name: "Jalepeno", malzeme: "Jalepeno", isChecked: true },
+  { name: "Sucuk", malzeme: "Sucuk", isChecked: false },
+];
+
+const formData = {
+  boyut: "",
+  kalinlik: "",
+  malzeme: malzemeListe,
+  isim: "",
+  not: "",
+  adet: 1,
+};
+
 export default function OrderForm() {
-  const [value, setValue] = useState(1);
+  const [form, setForm] = useState(formData);
 
-  const decreaseValue = () => {
-    setValue(value > 1 ? value - 1 : 1);
+  const handleChange = (event) => {
+    let { id, name, value, type, checked } = event.target;
+
+    if (id === "increase") {
+      value = form.adet + 1;
+    }
+
+    if (id === "decrease") {
+      value = form.adet > 1 ? form.adet - 1 : 1;
+    }
+
+    if (type === "checkbox") {
+      const malzemeler = [...form.malzeme];
+      const malzemeIndex = malzemeler.findIndex((m) => m.malzeme === value);
+
+      malzemeler[malzemeIndex] = {
+        ...malzemeler[malzemeIndex],
+        isChecked: checked,
+      };
+
+      value = malzemeler;
+    }
+
+    setForm({ ...form, [name]: value });
+    validateField(name, value);
   };
 
-  const increaseValue = () => {
-    setValue(value + 1);
-  };
-  const firstMaterialGroup = [
-    "Pepperoni",
-    "Tavuk Izgara",
-    "Mısır",
-    "Sarımsak",
-    "Ananas",
-  ];
-  const secondMaterialGroup = ["Sosis", "Soğan", "Sucuk", "Biber", "Kabak"];
-  const thirdMaterialGroup = ["Kanada Jambonu", "Domates", "Jalepeno", "Sucuk"];
+  useEffect(() => {
+    console.log(form);
+  }, [form]);
 
-  const firstInputGroup = Array.from({ length: 5 });
-  const secondInputGroup = Array.from({ length: 5 });
-  const thirdInputGroup = Array.from({ length: 4 });
   return (
     <>
-      <header className="container-fluid d-flex flex-column align-items-center gap-3 justify-content-center bg-custom-red text-white">
-        <a className="nav-link text-white" href="#">
-          <h1>Teknolojik Yemekler</h1>
-        </a>
-        <nav className="d-flex align-items-center gap-1">
-          <a className="text-white" href="#">
-            Anasayfa
-          </a>
-          <span>-</span>
-          <a className="text-white" href="#">
-            Sipariş Oluştur
-          </a>
-        </nav>
-      </header>
       <section className="container d-flex flex-column align-items-center justify-content-center mt-5">
         <h4 style={{ marginLeft: "85px" }}>Position Absolute Acı Pizza</h4>
         <div className="d-flex mt-3 sp" style={{ width: "195px" }}>
@@ -66,19 +89,40 @@ export default function OrderForm() {
                   Boyut Seç<span className="red-star">*</span>
                 </h6>
                 <div className="mb-3" style={{ width: "300px" }}>
-                  <input type="radio" name="hamur" id="kucuk" value="kucuk" />
+                  <input
+                    type="radio"
+                    name="boyut"
+                    id="kucuk"
+                    value="kucuk"
+                    checked={form.boyut === "kucuk"}
+                    onChange={handleChange}
+                  />
                   <label htmlFor="kucuk" className="ps-2">
                     Küçük
                   </label>
                 </div>
                 <div className="mb-3">
-                  <input type="radio" name="hamur" id="orta" value="orta" />
+                  <input
+                    type="radio"
+                    name="boyut"
+                    id="orta"
+                    value="orta"
+                    checked={form.boyut === "orta"}
+                    onChange={handleChange}
+                  />
                   <label htmlFor="orta" className="ps-2">
                     Orta
                   </label>
                 </div>
                 <div className="mb-3">
-                  <input type="radio" name="hamur" id="buyuk" value="buyuk" />
+                  <input
+                    type="radio"
+                    name="boyut"
+                    id="buyuk"
+                    value="buyuk"
+                    checked={form.boyut === "buyuk"}
+                    onChange={handleChange}
+                  />
                   <label htmlFor="buyuk" className="ps-2">
                     Büyük
                   </label>
@@ -86,14 +130,19 @@ export default function OrderForm() {
               </div>
               <div>
                 <label
-                  htmlFor="hamur"
+                  htmlFor="kalinlik"
                   className="mt-2 mb-2"
                   style={{ fontWeight: 700 }}
                 >
                   Hamur Seç<span className="red-star">*</span>
                 </label>
-                <select name="hamur" id="hamur">
-                  <option selected>Hamur Kalınlığı</option>
+                <select
+                  name="kalinlik"
+                  id="kalinlik"
+                  value={form.kalinlik}
+                  onChange={handleChange}
+                >
+                  <option value="">Hamur Kalınlığı</option>
                   <option value="ince">İnce</option>
                   <option value="orta">Orta</option>
                   <option value="kalın">Kalın</option>
@@ -101,7 +150,9 @@ export default function OrderForm() {
               </div>
             </section>
             <section className="mt-4">
-              <h6 className="pb-2">Ek Malzemeler</h6>
+              <h6 className="pb-2">
+                Ek Malzemeler <span className="red-star">*</span>
+              </h6>
               <p style={{ width: "300px" }}>
                 En fazla 10 malzeme seçebilirsiniz. 5&#8378;
               </p>
@@ -114,54 +165,69 @@ export default function OrderForm() {
                 }}
               >
                 <div>
-                  {firstInputGroup.map((e, i) => {
+                  {form.malzeme.slice(0, 5).map((m, i) => {
                     return (
-                      <div className="mb-3">
+                      <div key={i} className="mb-3">
                         <input
+                          key={m}
                           type="checkbox"
-                          id={firstMaterialGroup[i]}
-                          name={firstMaterialGroup[i]}
-                          value={firstMaterialGroup[i]}
+                          id={`checkbox-${m.malzeme}`}
+                          name="malzeme"
+                          value={m.malzeme}
+                          onChange={handleChange}
+                          checked={m.isChecked}
                         />
-                        <label htmlFor={firstMaterialGroup[i]} className="ms-3">
-                          {firstMaterialGroup[i]}
+                        <label
+                          htmlFor={`checkbox-${m.malzeme}`}
+                          className="ms-3"
+                        >
+                          {m.name}
                         </label>
                       </div>
                     );
                   })}
                 </div>
                 <div className="me-5">
-                  {secondInputGroup.map((e, i) => {
+                  {form.malzeme.slice(5, 10).map((m, i) => {
                     return (
-                      <div className="mb-3">
+                      <div key={i} className="mb-3">
                         <input
+                          key={m}
                           type="checkbox"
-                          id={secondMaterialGroup[i]}
-                          name={secondMaterialGroup[i]}
-                          value={secondMaterialGroup[i]}
+                          id={`checkbox-${m.malzeme}`}
+                          name="malzeme"
+                          value={m.malzeme}
+                          onChange={handleChange}
+                          checked={m.isChecked}
                         />
                         <label
-                          htmlFor={secondMaterialGroup[i]}
+                          htmlFor={`checkbox-${m.malzeme}`}
                           className="ms-3"
                         >
-                          {secondMaterialGroup[i]}
+                          {m.name}
                         </label>
                       </div>
                     );
                   })}
                 </div>
                 <div className="">
-                  {thirdInputGroup.map((e, i) => {
+                  {form.malzeme.slice(10, 14).map((m, i) => {
                     return (
-                      <div className="mb-3">
+                      <div key={i} className="mb-3">
                         <input
+                          key={m}
                           type="checkbox"
-                          id={thirdMaterialGroup[i]}
-                          name={thirdMaterialGroup[i]}
-                          value={thirdMaterialGroup[i]}
+                          id={`checkbox-${m.malzeme}`}
+                          name="malzeme"
+                          value={m.malzeme}
+                          onChange={handleChange}
+                          checked={m.isChecked}
                         />
-                        <label htmlFor={thirdMaterialGroup[i]} className="ms-3">
-                          {thirdMaterialGroup[i]}
+                        <label
+                          htmlFor={`checkbox-${m.malzeme}`}
+                          className="ms-3"
+                        >
+                          {m.name}
                         </label>
                       </div>
                     );
@@ -169,13 +235,24 @@ export default function OrderForm() {
                 </div>
               </div>
 
-              <label className="mb-4 mt-5 f-weight">İsim</label>
-              <input type="text" name="" id="" className="form-control" />
+              <label className="mb-4 mt-5 f-weight" htmlFor="isim">
+                İsim
+              </label>
+              <input
+                type="text"
+                name="isim"
+                id="isim"
+                value={form.isim}
+                onChange={handleChange}
+                className="form-control"
+              />
 
               <label className="mb-4 mt-4 f-weight">Sipariş Notu</label>
               <textarea
-                name=""
-                id=""
+                name="not"
+                id="not"
+                value={form.not}
+                onChange={handleChange}
                 className="form-control"
                 placeholder="Siparişine eklemek istediğin bir not var mı?"
               ></textarea>
@@ -188,16 +265,20 @@ export default function OrderForm() {
                 <div className="mb-5 me-5 d-flex justify-content-center">
                   <div>
                     <button
+                      type="button"
+                      id="decrease"
+                      name="adet"
                       className="btn btn-warning radius-left f-weight"
                       style={{ width: "50px", height: "50px" }}
-                      onClick={decreaseValue}
+                      value={form.adet}
+                      onClick={handleChange}
                     >
                       -
                     </button>
                   </div>
                   <input
                     type="text"
-                    value={value}
+                    value={form.adet}
                     readOnly
                     className="form-control bg-white f-weight"
                     style={{
@@ -208,17 +289,21 @@ export default function OrderForm() {
                   />
                   <div>
                     <button
+                      type="button"
+                      id="increase"
+                      name="adet"
                       className="btn btn-warning radius-right f-weight"
                       style={{ width: "50px", height: "50px" }}
-                      onClick={increaseValue}
+                      value={form.adet}
+                      onClick={handleChange}
                     >
                       +
                     </button>
                   </div>
                 </div>
 
-                <div class="card mb-5" style={{ width: "22rem" }}>
-                  <div class=" w-100">
+                <div className="card mb-5" style={{ width: "22rem" }}>
+                  <div className=" w-100">
                     <div className="pd-4">
                       <p className="f-weight">Sipariş Toplamı</p>
 

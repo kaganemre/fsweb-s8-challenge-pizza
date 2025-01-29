@@ -1,7 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { useHistory } from "react-router-dom";
 import { Input, FormFeedback } from "reactstrap";
-import axios from "axios";
 
 const malzemeListe = [
   { name: "Pepperoni", malzeme: "Pepperoni", isChecked: true },
@@ -33,7 +31,7 @@ const errorMessages = {
   malzeme: "Malzeme en az 4 en fazla da 10 adet seçilebilir.",
 };
 
-export default function OrderForm() {
+export default function OrderForm({ onSubmit }) {
   const [form, setForm] = useState(formData);
   const [malzemeler, setMalzemeler] = useState(malzemeListe);
   const [isValid, setIsValid] = useState(false);
@@ -41,8 +39,6 @@ export default function OrderForm() {
     isim: null,
     malzeme: true,
   });
-  const history = useHistory();
-
   const handleChange = (event) => {
     let { id, name, value, type, checked } = event.target;
 
@@ -88,16 +84,9 @@ export default function OrderForm() {
     setIsValid(validation);
   }, [form]);
 
-  const handleSubmit = async (event) => {
+  const handleSubmit = (event) => {
     event.preventDefault();
-    if (isValid) {
-      // console.log(form);
-      await axios
-        .post("https://reqres.in/api/pizza", form)
-        .then((response) => console.log(response.data));
-
-      // history.push("/success");
-    }
+    onSubmit(form, isValid);
   };
 
   return (
@@ -121,7 +110,7 @@ export default function OrderForm() {
             kökenli lezzetli bir yemektir. . Küçük bir pizzaya bazen pizzetta
             denir.
           </p>
-          <form>
+          <form onSubmit={handleSubmit}>
             <section className="d-flex">
               <div className="d-flex flex-column mt-3">
                 <h6 className="mb-3">
@@ -382,7 +371,6 @@ export default function OrderForm() {
                       className="btn btn-warning rounded w-100 f-weight"
                       style={{ height: "50px" }}
                       disabled={!isValid}
-                      onClick={handleSubmit}
                     >
                       SİPARİŞ VER
                     </button>

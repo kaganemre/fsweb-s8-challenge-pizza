@@ -25,6 +25,8 @@ const formData = {
   isim: "",
   not: " ",
   adet: 1,
+  secimler: 0,
+  toplam: 0,
 };
 const errorMessages = {
   isim: "En az 3 karakter içermelidir.",
@@ -83,6 +85,16 @@ export default function OrderForm({ onSubmit }) {
     const validation = Object.values(errors).every((err) => err === true);
     setIsValid(validation);
   }, [form]);
+
+  useEffect(() => {
+    const secimler = malzemeler.filter((m) => m.isChecked).length * 5;
+    const toplam = secimler + 85.5 * form.adet;
+    setForm((prevForm) => ({
+      ...prevForm,
+      secimler: secimler,
+      toplam: toplam,
+    }));
+  }, [form.malzeme, form.adet]);
 
   const handleSubmit = (event) => {
     event.preventDefault();
@@ -350,18 +362,14 @@ export default function OrderForm({ onSubmit }) {
                       <div className="d-flex mb-2">
                         <span className="me-5 pr-50">Seçimler</span>
                         <span>
-                          {malzemeler.filter((m) => m.isChecked === true)
-                            .length * 5}
+                          {form.secimler}
                           &#8378;
                         </span>
                       </div>
                       <div className="d-flex f-weight">
                         <span className="me-5 red-special pr-60">Toplam</span>
                         <span className="red-special">
-                          {malzemeler.filter((m) => m.isChecked === true)
-                            .length *
-                            5 +
-                            85.5 * form.adet}
+                          {form.toplam}
                           &#8378;
                         </span>
                       </div>

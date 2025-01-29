@@ -14,6 +14,22 @@ h6 {
     font-weight: bold !important;
 }
 
+.lezzet-yolda {
+    font-family: "Satisfy", "serif";
+    color: #FDC913;
+    font-size: 2rem;
+}
+
+.siparis-alindi {
+    font-family: "Roboto Condensed", "serif";
+    font-size: 5rem;
+    font-weight: 200;
+}
+
+.f-barlow {
+    font-family: "Barlow", "serif";
+}
+
 select {
     font-weight: 500;
 }

@@ -17,9 +17,9 @@ function App() {
         .post("https://reqres.in/api/pizza", form)
         .then((response) => {
           setApiResponse([response.data]);
+          history.push("/success");
         })
         .catch((error) => console.log(error));
-      history.push("/success");
     }
   };
 

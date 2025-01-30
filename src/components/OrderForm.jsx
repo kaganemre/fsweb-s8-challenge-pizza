@@ -19,8 +19,8 @@ const malzemeListe = [
 ];
 
 const formData = {
-  boyut: "orta",
-  kalinlik: "orta",
+  boyut: "Orta",
+  kalinlik: "Orta",
   malzeme: malzemeListe.filter((m) => m.isChecked),
   isim: "",
   not: "",
@@ -32,6 +32,8 @@ const errorMessages = {
   isim: "En az 3 karakter içermelidir.",
   malzeme: "Malzeme en az 4 en fazla da 10 adet seçilebilir.",
 };
+
+const boyut = ["Küçük", "Orta", "Büyük"];
 
 export default function OrderForm({ onSubmit }) {
   const [form, setForm] = useState(formData);
@@ -123,56 +125,35 @@ export default function OrderForm({ onSubmit }) {
             denir.
           </p>
           <form onSubmit={handleSubmit}>
-            <section className="d-flex">
+            <section
+              className="d-flex justify-content-between"
+              style={{ width: "424px" }}
+            >
               <div className="d-flex flex-column mt-3">
                 <h6 className="mb-3">
                   Boyut Seç<span className="red-star">*</span>
                 </h6>
-                <div className="mb-3" style={{ width: "300px" }}>
-                  <input
-                    type="radio"
-                    name="boyut"
-                    id="kucuk"
-                    value="kucuk"
-                    checked={form.boyut === "kucuk"}
-                    onChange={handleChange}
-                  />
-                  <label htmlFor="kucuk" className="ps-2">
-                    Küçük
-                  </label>
-                </div>
-                <div className="mb-3">
-                  <input
-                    type="radio"
-                    name="boyut"
-                    id="orta"
-                    value="orta"
-                    checked={form.boyut === "orta"}
-                    onChange={handleChange}
-                  />
-                  <label htmlFor="orta" className="ps-2">
-                    Orta
-                  </label>
-                </div>
-                <div className="mb-3">
-                  <input
-                    type="radio"
-                    name="boyut"
-                    id="buyuk"
-                    value="buyuk"
-                    checked={form.boyut === "buyuk"}
-                    onChange={handleChange}
-                  />
-                  <label htmlFor="buyuk" className="ps-2">
-                    Büyük
-                  </label>
-                </div>
+                {boyut.map((b, i) => (
+                  <div key={i} className="mb-3">
+                    <input
+                      type="radio"
+                      name="boyut"
+                      id={b}
+                      value={b}
+                      checked={form.boyut === b}
+                      onChange={handleChange}
+                    />
+                    <label htmlFor={b} className="ps-2">
+                      {b}
+                    </label>
+                  </div>
+                ))}
               </div>
-              <div>
+              <div className="d-flex flex-column">
                 <label
                   htmlFor="kalinlik"
-                  className="mt-2 mb-2"
-                  style={{ fontWeight: 700 }}
+                  className="mb-3"
+                  style={{ fontWeight: 700, marginTop: ".85rem" }}
                 >
                   Hamur Seç<span className="red-star">*</span>
                 </label>
@@ -183,9 +164,9 @@ export default function OrderForm({ onSubmit }) {
                   onChange={handleChange}
                 >
                   <option value="">Hamur Kalınlığı</option>
-                  <option value="ince">İnce</option>
-                  <option value="orta">Orta</option>
-                  <option value="kalın">Kalın</option>
+                  <option value="İnce">İnce</option>
+                  <option value="Orta">Orta</option>
+                  <option value="Kalın">Kalın</option>
                 </select>
               </div>
             </section>

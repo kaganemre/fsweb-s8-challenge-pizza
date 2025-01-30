@@ -23,7 +23,7 @@ const formData = {
   kalinlik: "orta",
   malzeme: malzemeListe.filter((m) => m.isChecked),
   isim: "",
-  not: " ",
+  not: "",
   adet: 1,
   secimler: 0,
   toplam: 0,

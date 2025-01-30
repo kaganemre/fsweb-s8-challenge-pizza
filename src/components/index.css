@@ -93,6 +93,10 @@ textarea::placeholder {
     padding-right: 55px;
 }
 
+.pr-7rem {
+    padding-right: 7rem;
+}
+
 .f-weight {
     font-weight: 600 !important;
 }

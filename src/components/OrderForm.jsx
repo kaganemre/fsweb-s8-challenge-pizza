@@ -3,19 +3,19 @@ import { Input, FormFeedback } from "reactstrap";
 
 const malzemeListe = [
   { name: "Pepperoni", malzeme: "Pepperoni", isChecked: true },
-  { name: "Tavuk Izgara", malzeme: "Tavuk Izgara", isChecked: false },
-  { name: "Mısır", malzeme: "Mısır", isChecked: true },
-  { name: "Sarımsak", malzeme: "Sarımsak", isChecked: false },
-  { name: "Ananas", malzeme: "Ananas", isChecked: true },
   { name: "Sosis", malzeme: "Sosis", isChecked: true },
-  { name: "Soğan", malzeme: "Soğan", isChecked: false },
-  { name: "Brokoli", malzeme: "Brokoli", isChecked: false },
-  { name: "Biber", malzeme: "Biber", isChecked: false },
-  { name: "Kabak", malzeme: "Kabak", isChecked: false },
   { name: "Kanada Jambonu", malzeme: "Kanada Jambonu", isChecked: false },
+  { name: "Tavuk Izgara", malzeme: "Tavuk Izgara", isChecked: false },
+  { name: "Soğan", malzeme: "Soğan", isChecked: false },
   { name: "Domates", malzeme: "Domates", isChecked: false },
+  { name: "Mısır", malzeme: "Mısır", isChecked: true },
+  { name: "Brokoli", malzeme: "Brokoli", isChecked: false },
   { name: "Jalepeno", malzeme: "Jalepeno", isChecked: true },
+  { name: "Sarımsak", malzeme: "Sarımsak", isChecked: false },
+  { name: "Biber", malzeme: "Biber", isChecked: false },
   { name: "Sucuk", malzeme: "Sucuk", isChecked: false },
+  { name: "Ananas", malzeme: "Ananas", isChecked: true },
+  { name: "Kabak", malzeme: "Kabak", isChecked: false },
 ];
 
 const formData = {
@@ -178,82 +178,31 @@ export default function OrderForm({ onSubmit }) {
                 En fazla 10 malzeme seçebilirsiniz. 5&#8378;
               </p>
               <div
-                className="d-flex gap-5 mt-5"
+                className="row row-cols-2 row-cols-md-3 mt-5 responsive-row"
                 style={{
-                  width: "500px",
+                  width: "600px",
                   fontWeight: "700",
                   color: "#5F5F5F",
                 }}
               >
-                <div>
-                  {malzemeler.slice(0, 5).map((m, i) => {
-                    return (
-                      <div key={i} className="mb-3">
-                        <input
-                          key={m}
-                          type="checkbox"
-                          id={`checkbox-${m.malzeme}`}
-                          name="malzeme"
-                          value={m.malzeme}
-                          onChange={handleChange}
-                          checked={m.isChecked}
-                        />
-                        <label
-                          htmlFor={`checkbox-${m.malzeme}`}
-                          className="ms-3"
-                        >
-                          {m.name}
-                        </label>
-                      </div>
-                    );
-                  })}
-                </div>
-                <div className="me-5">
-                  {malzemeler.slice(5, 10).map((m, i) => {
-                    return (
-                      <div key={i} className="mb-3">
-                        <input
-                          key={m}
-                          type="checkbox"
-                          id={`checkbox-${m.malzeme}`}
-                          name="malzeme"
-                          value={m.malzeme}
-                          onChange={handleChange}
-                          checked={m.isChecked}
-                        />
-                        <label
-                          htmlFor={`checkbox-${m.malzeme}`}
-                          className="ms-3"
-                        >
-                          {m.name}
-                        </label>
-                      </div>
-                    );
-                  })}
-                </div>
-                <div className="">
-                  {malzemeler.slice(10, 14).map((m, i) => {
-                    return (
-                      <div key={i} className="mb-3">
-                        <input
-                          key={m}
-                          type="checkbox"
-                          id={`checkbox-${m.malzeme}`}
-                          name="malzeme"
-                          value={m.malzeme}
-                          onChange={handleChange}
-                          checked={m.isChecked}
-                        />
-                        <label
-                          htmlFor={`checkbox-${m.malzeme}`}
-                          className="ms-3"
-                        >
-                          {m.name}
-                        </label>
-                      </div>
-                    );
-                  })}
-                </div>
+                {malzemeler.map((m, i) => {
+                  return (
+                    <div key={i} className="col mb-3">
+                      <input
+                        key={m}
+                        type="checkbox"
+                        id={m.malzeme}
+                        name="malzeme"
+                        value={m.malzeme}
+                        onChange={handleChange}
+                        checked={m.isChecked}
+                      />
+                      <label htmlFor={m.malzeme} className="ms-3">
+                        {m.name}
+                      </label>
+                    </div>
+                  );
+                })}
               </div>
 
               {errors.malzeme === false && (

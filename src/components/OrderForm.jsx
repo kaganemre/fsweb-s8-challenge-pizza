@@ -106,7 +106,7 @@ export default function OrderForm({ onSubmit }) {
   return (
     <>
       <section className="container d-flex flex-column align-items-center justify-content-center mt-5">
-        <h4 style={{ marginLeft: "85px" }}>Position Absolute Acı Pizza</h4>
+        <h4>Position Absolute Acı Pizza</h4>
         <div className="d-flex mt-3 sp" style={{ width: "195px" }}>
           <span>85.50₺</span>
           <div className="d-flex gap-5" style={{ paddingLeft: "370px" }}>
@@ -124,9 +124,9 @@ export default function OrderForm({ onSubmit }) {
             kökenli lezzetli bir yemektir. . Küçük bir pizzaya bazen pizzetta
             denir.
           </p>
-          <form onSubmit={handleSubmit}>
+          <form onSubmit={handleSubmit} className="order-form">
             <section
-              className="d-flex justify-content-between"
+              className="form-section d-flex justify-content-between"
               style={{ width: "424px" }}
             >
               <div className="d-flex flex-column mt-3">
@@ -149,7 +149,7 @@ export default function OrderForm({ onSubmit }) {
                   </div>
                 ))}
               </div>
-              <div className="d-flex flex-column">
+              <div className="dough-selection d-flex flex-column">
                 <label
                   htmlFor="kalinlik"
                   className="mb-3"
@@ -171,7 +171,7 @@ export default function OrderForm({ onSubmit }) {
               </div>
             </section>
             <section className="mt-4">
-              <h6 className="pb-2">
+              <h6 className="ingredients-title pb-2">
                 Ek Malzemeler <span className="red-star">*</span>
               </h6>
               <p style={{ width: "300px" }}>
@@ -215,7 +215,7 @@ export default function OrderForm({ onSubmit }) {
                 </div>
               )}
 
-              <label className="mb-4 mt-5 f-weight" htmlFor="isim">
+              <label className="name-label mb-4 mt-5 f-weight" htmlFor="isim">
                 İsim
               </label>
               <Input
@@ -230,7 +230,9 @@ export default function OrderForm({ onSubmit }) {
               {!errors.isim && (
                 <FormFeedback>{errorMessages.isim}</FormFeedback>
               )}
-              <label className="mb-4 mt-4 f-weight">Sipariş Notu</label>
+              <label className="note-label mb-4 mt-4 f-weight">
+                Sipariş Notu
+              </label>
               <textarea
                 name="not"
                 value={form.not}
@@ -241,10 +243,43 @@ export default function OrderForm({ onSubmit }) {
               <hr className="mt-4" />
 
               <div
-                className="d-flex align-items-start"
-                style={{ width: "530px", height: "256px" }}
+                className="d-flex order-container"
+                style={{ width: "530px", height: "190px" }}
               >
-                <div className="mb-5 me-5 d-flex justify-content-center">
+                <div
+                  className="card order-summary"
+                  style={{ width: "22rem", order: "2", height: "190px" }}
+                >
+                  <div className=" w-100">
+                    <div className="pd-4">
+                      <p className="f-weight">Sipariş Toplamı</p>
+
+                      <div className="d-flex mb-2">
+                        <span className="me-5 pr-50">Seçimler</span>
+                        <span>
+                          {form.secimler}
+                          &#8378;
+                        </span>
+                      </div>
+                      <div className="d-flex f-weight">
+                        <span className="me-5 red-special pr-60">Toplam</span>
+                        <span className="red-special">
+                          {form.toplam}
+                          &#8378;
+                        </span>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <div
+                  className="d-flex me-2 order-count"
+                  style={{
+                    height: "190px",
+                    width: "12rem",
+                    order: "1",
+                  }}
+                >
                   <div>
                     <button
                       type="button"
@@ -283,38 +318,20 @@ export default function OrderForm({ onSubmit }) {
                     </button>
                   </div>
                 </div>
-
-                <div className="card mb-5" style={{ width: "22rem" }}>
-                  <div className=" w-100">
-                    <div className="pd-4">
-                      <p className="f-weight">Sipariş Toplamı</p>
-
-                      <div className="d-flex mb-2">
-                        <span className="me-5 pr-50">Seçimler</span>
-                        <span>
-                          {form.secimler}
-                          &#8378;
-                        </span>
-                      </div>
-                      <div className="d-flex f-weight">
-                        <span className="me-5 red-special pr-60">Toplam</span>
-                        <span className="red-special">
-                          {form.toplam}
-                          &#8378;
-                        </span>
-                      </div>
-                    </div>
-                    <button
-                      type="submit"
-                      className="btn btn-warning rounded w-100 f-weight"
-                      style={{ height: "50px" }}
-                      disabled={!isValid}
-                    >
-                      SİPARİŞ VER
-                    </button>
-                  </div>
-                </div>
               </div>
+
+              <button
+                type="submit"
+                className="btn btn-warning rounded f-weight order-button"
+                style={{
+                  height: "50px",
+                  width: "21.3rem",
+                  marginLeft: "190px",
+                }}
+                disabled={!isValid}
+              >
+                SİPARİŞ VER
+              </button>
             </section>
           </form>
         </article>

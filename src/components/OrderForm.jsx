@@ -240,8 +240,7 @@ export default function OrderForm({ onSubmit }) {
                 className="form-control"
                 placeholder="Siparişine eklemek istediğin bir not var mı?"
               ></textarea>
-              <hr className="mt-4" />
-
+              <hr className="mt-4 form-divider" />
               <div
                 className="d-flex order-container"
                 style={{ width: "530px", height: "190px" }}
@@ -271,7 +270,6 @@ export default function OrderForm({ onSubmit }) {
                     </div>
                   </div>
                 </div>
-
                 <div
                   className="d-flex me-2 order-count"
                   style={{
@@ -319,7 +317,6 @@ export default function OrderForm({ onSubmit }) {
                   </div>
                 </div>
               </div>
-
               <button
                 type="submit"
                 className="btn btn-warning rounded f-weight order-button"

@@ -1,3 +1,4 @@
+
 header {
     height: 170px;
 }
@@ -10,6 +11,11 @@ h4 {
     font-weight: 600 !important;
 }
 
+h6 {
+    padding-right: 10px;
+    font-weight: bold !important;
+}
+
 article {
     margin-bottom: 130px;
    }
@@ -17,10 +23,6 @@ article {
 
 section h4 {
     margin-left: 89px;
-}
-h6 {
-    padding-right: 10px;
-    font-weight: bold !important;
 }
 
 .lezzet-yolda {
@@ -110,10 +112,6 @@ textarea::placeholder {
     font-weight: 600 !important;
 }
 
-hr {
-    width: 33.125rem;
-}
-
 .radius-right {
     border-top-right-radius: 7px !important;
     border-bottom-right-radius: 7px !important;
@@ -123,6 +121,40 @@ hr {
     border-top-left-radius: 7px !important;
     border-bottom-left-radius: 7px !important;
 }
+
+ul {
+    padding:0;
+    list-style-type: none;
+}
+
+.instagram-section {
+    width: 347px;
+    margin-top: 64px;
+    margin-left: 50px;
+}
+
+.footer {
+    background-color: #1A1A1A;
+    color: #fff;
+}
+
+.footer-content {
+    width: 1450px;
+    padding-top: 40px;
+    padding-left: 135px;
+    gap: 3rem;
+}
+
+.footer-divider {
+    width: 100%;
+    margin-top: 20px;
+}
+
+.footer-bottom {
+    width: 1110px;
+    margin-left: 350px;
+}
+
 @media (max-width: 768px) {
     nav {
         width:360px;
@@ -191,7 +223,7 @@ hr {
     width: 350px !important;
    }
    
-   hr {
+   .form-divider {
     width: 350px;
    }
    
@@ -215,6 +247,25 @@ hr {
    .order-button {
     width: 10rem !important;
     margin-top: 20px !important;
+   }
+
+   .footer-content {
+    flex-direction: column;
+    gap:0;
+   }
+
+   .instagram-section {
+    margin-left: 1px;
+   }
+  
+   .footer-divider {
+    width: 350px;
+    margin-left: 135px;
+   }
+
+   .footer-bottom {
+    width: 350px;
+    margin-left: 135px;
    }
    
 }
